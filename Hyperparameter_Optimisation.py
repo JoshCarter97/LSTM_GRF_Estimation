@@ -11,7 +11,6 @@ import ML_Models
 logging_file_name = "optuna_logs.txt"  # file name for where the hyperparameter optimisation output logs will be saved
 base_path = "/app"  # this is the base path for this repo's location (for example within the docker container)
 
-
 ## SET PARAMATERS OF THE MODEL TO BE OPTIMISED ##
 input_variables = ["FSR_1", "FSR_2", "FSR_3", "FSR_4", "FSR_5", "FSR_6", "FSR_7", "FSR_8", "FSR_9", "FSR_10", "FSR_11",
                    "FSR_12", "FSR_13", "FSR_14", "FSR_15", "FSR_16", "Nurvv_CoPx", "Nurvv_CoPy", "GCT", "mass", "speed",
@@ -128,7 +127,8 @@ def objective_cv(trial):
         train_generator = Dataset_Generator.DatasetGenerator(participants=training_participants,
                                                              input_variables=input_variables,
                                                              output_variables=target_variable,
-                                                             side=side)
+                                                             side=side,
+                                                             base_path=base_path)
 
         train_input_data, train_output_data, train_contact_IDs = train_generator.collect_dataset()
 
@@ -136,7 +136,8 @@ def objective_cv(trial):
         val_generator = Dataset_Generator.DatasetGenerator(participants=val_participants,
                                                            input_variables=input_variables,
                                                            output_variables=target_variable,
-                                                           side=side)
+                                                           side=side,
+                                                           base_path=base_path)
 
         val_input_data, val_output_data, val_contact_IDs = val_generator.collect_dataset()
 

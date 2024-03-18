@@ -66,11 +66,8 @@ for participant in participants:
     train_generator = Dataset_Generator.DatasetGenerator(participants=train_participants,
                                                          input_variables=input_variables,
                                                          output_variables=target_variable,
-                                                         side=side)
-
-    train_generator.file_extensions = {"force_extension": "_segmented_f_norm_15Hz.npy",
-                                       "FSR_extension": "_segmented_FSR_norm.npy",
-                                       "NURVV_IMU_extension": "_segmented_Nurvv_IMU_norm.npy"}
+                                                         side=side,
+                                                         base_path=base_path)
 
     _, _, _ = train_generator.collect_dataset()
     train_input_data = train_generator.all_input_data
@@ -81,19 +78,13 @@ for participant in participants:
     val_generator = Dataset_Generator.DatasetGenerator(participants=val_participant,
                                                        input_variables=input_variables,
                                                        output_variables=target_variable,
-                                                       side=side)
-
-    val_generator.file_extensions = {"force_extension": "_segmented_f_norm_15Hz.npy",
-                                     "FSR_extension": "_segmented_FSR_norm.npy",
-                                     "delsys_IMU_extension": "_segmented_IMU_norm.npy",
-                                     "NURVV_IMU_extension": "_segmented_Nurvv_IMU_norm.npy",
-                                     "moment_extension": "_moments_norm.npy"}
+                                                       side=side,
+                                                       base_path=base_path)
 
     val_input_data, val_output_data, val_contact_IDs = val_generator.collect_dataset()
 
     # scale the datasets to Zscores
     dataset_processor = Dataset_Generator.DatasetProcessor(input_variables, train_input_data, val_input_data)
-    train_output_data, val_output_data = dataset_processor.change_sequence_length(101, train_output_data, val_output_data)  #### TESTING THIS ####
     scaled_training_input_data, scaled_val_input_data, _, stats_list = dataset_processor.convert_to_zscores(group_FSR=False)
 
     # convert the data to pytorch datasets
@@ -103,7 +94,7 @@ for participant in participants:
     training_output_dict = Training_Utils.Run_Train_Val(train_dataset, val_dataset, model, optimiser, loss_func,
                                                         num_epochs=EPOCHS, batch_size=BATCH_SIZE,
                                                         variable_names=input_variables, calculate_feature_importance=False,
-                                                        num_permutations=100, units="Nm")
+                                                        num_permutations=100, units="N")
 
     # add the input variables, output variable, and scaling stats to the dictionary
     training_output_dict["input_variables"] = input_variables
