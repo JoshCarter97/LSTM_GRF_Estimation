@@ -21,6 +21,8 @@ target_variable = ["vGRF"]
 side = "left"
 ##################################################
 
+# Check if GPU is available
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # this will be the objective for a single fold of the cross fold validation
 def objective(trial, train_loader, val_loader, input_variables):
@@ -41,7 +43,7 @@ def objective(trial, train_loader, val_loader, input_variables):
                                       linear_dropout=linear_dropout, linear2_in=linear3_size, linear3_in=linear4_size,
                                       activation_function=activation_function)
 
-    model = model.cuda()
+    model = model.to(device)
 
     # define the optimiser and pass the parameters to the optimiser
     optimiser = torch.optim.Adam(model.parameters(), lr=lr)

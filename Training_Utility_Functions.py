@@ -79,7 +79,8 @@ def Run_Train_Val(training_data, val_data, model, optimiser, loss_function, num_
     total_batches = len(train_loader)  # needed for the epoch progress bar
 
     # if using GPU then move everything that needs to be on the GPU to the GPU
-    model = model.cuda()
+    if torch.cuda.is_available():
+        model = model.cuda()
 
     # initialise the loss and epoch lists
     train_loss = []
@@ -153,8 +154,9 @@ def Run_Train_Val(training_data, val_data, model, optimiser, loss_function, num_
 
         model.train()  # convert the model back to training mode for the next epoch
 
-    # move the model back to cpu
-    model = model.cpu()
+    # if using GPU then move the model back to the CPU
+    if torch.cuda.is_available():
+        model = model.cpu()
 
     # stack the lists into arrays
     estimated_output = np.vstack(estimated_output)
@@ -173,7 +175,6 @@ def Run_Train_Val(training_data, val_data, model, optimiser, loss_function, num_
                             "ground_truth_output": ground_truth_output,
                             "RMSE_loss": RMSE_loss,
                             "input_variable_names": variable_names}
-
 
     if calculate_feature_importance:
         print("\nCalculating feature importance...")
@@ -197,7 +198,8 @@ def Feature_Importance(training_output_dict, val_dataloader, num_permutations=10
 
     contributions_dict = {}
 
-    model = model.cuda()
+    if torch.cuda.is_available():
+        model = model.cuda()
 
     model.eval()
     with torch.no_grad():
@@ -251,7 +253,9 @@ def Feature_Importance(training_output_dict, val_dataloader, num_permutations=10
 
             print(f"{input_variable} - mean PFI: {overall_mean_PFI:.3f}, SD PFI: {overall_SD_PFI:.3f}")
 
-    model = model.cpu()
+    # move the model back to the CPU if it was on the GPU
+    if torch.cuda.is_available():
+        model = model.cpu()
 
     return contributions_dict
 
