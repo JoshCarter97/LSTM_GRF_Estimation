@@ -9,7 +9,7 @@ project_root (LSTM_GRF_Estimation)/
 ├── Dataset/   
 │   ├── Info_Files/   
 │   ├── P001/   
-│   ├── P002/ 
+│   ├── P002/   
 │   └── ...   
 │   
 ├── Run_LOSO.py    
