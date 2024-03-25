@@ -5,13 +5,13 @@ Setup Anaconda Environment using the accompanying environment.yml file (Python V
 When moving this code and accompanying dataset onto your local or remote machine ensure you have the following file structure: 
 
 project_root (LSTM_GRF_Estimation)/
-│
-├── Dataset/
-│   ├── Info_Files/
-│   ├── P001/
-│   ├── P002/
-│   └── ...
-│
+│ 
+├── Dataset/ 
+│   ├── Info_Files/ 
+│   ├── P001/ 
+│   ├── P002/ 
+│   └── ... 
+│ 
 ├── Run_LOSO.py  
 ├── Hyperparameter_Optimisation.py  
 ├── ML_Models.py  
