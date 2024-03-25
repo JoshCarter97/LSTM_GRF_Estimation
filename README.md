@@ -23,5 +23,6 @@ The functionality provided:
 
 * Run hyperparameter optimisation for a given set of input variables and target output **(Hyperparameter_Optimisation.py)**. The search space for each hyperparameter can be adjusted in the objective function at the top of the script. 
 
-Before running the functional scripts the only variable you should need to change for it to work on your machine is to adjust the 'base_path' variable defined at the top of the current script to match your project_root/LSTM_GRF_Estimation folder path. 
+Before running the functional scripts the only variable you should need to change for it to work on your machine is to adjust the 'base_path' variable defined at the top of the current script to match your project_root/LSTM_GRF_Estimation folder path.  
+
 *Model training is currently supported on CPU and CUDA-powered GPUs and will automatically use the CUDA-powered GPU if it is available*
