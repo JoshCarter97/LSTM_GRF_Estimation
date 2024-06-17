@@ -9,7 +9,7 @@ import ML_Models
 
 
 base_path = "/app"  # this is the base path for this repo's location (for example within the docker container)
-
+base_path = "C:/Users/jc2369/PycharmProjects/GRF_Estimation_PeerJ"
 
 # read in the participant details from the npy file
 participant_details = np.load(os.path.join(base_path, "Dataset", "Info_Files", "participant_characteristics.npy"), allow_pickle=True).item()
@@ -19,6 +19,8 @@ participants = ["P002", "P003", "P004", "P006", "P007", "P008", "P009", "P010", 
                 "P016", "P017", "P018", "P019", "P020", "P021", "P022", "P023", "P024", "P025", "P026", "P027", "P028",
                 "P029", "P030", "P031", "P032", "P033", "P034", "P035", "P036", "P037", "P038", "P039", "P040", "P041",
                 "P042", "P043", "P044", "P045", "P046", "P047", "P048", "P049", "P050"]
+
+participants = ["P002", "P003", "P004"]
 
 
 # loop through and create a list of participants in train and val set
@@ -35,11 +37,11 @@ for participant in participants:
     trial_dict_path = os.path.join(base_path, "Dataset", "Info_Files", "processed_trials.npy")
     trial_dict = np.load(trial_dict_path, allow_pickle=True).item()
 
-    EPOCHS = 3
-    BATCH_SIZE = 16
-    lr = 0.0001
-    model = ML_Models.LSTM_Dropout(len(input_variables), hidden_size=256, input_dropout=0.2, linear_dropout=0.3,
-                                      linear2_in=256, linear3_in=128, activation_function='leaky_relu')
+    EPOCHS = 1
+    BATCH_SIZE = 8
+    lr = 0.0005
+    model = ML_Models.LSTM_Dropout(len(input_variables), hidden_size=512, input_dropout=0.2, linear_dropout=0.2,
+                                      linear2_in=64, linear3_in=32, activation_function='relu')
 
     optimiser = torch.optim.Adam(model.parameters(), lr=lr)
     loss_func = nn.MSELoss(reduction='none')
